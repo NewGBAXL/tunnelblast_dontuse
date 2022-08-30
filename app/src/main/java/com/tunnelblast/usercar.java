@@ -26,7 +26,7 @@ class Usercar
     byte pwrRate;
     byte xPos; //todo: setup coordinate object
     byte yPos; //todo: setup coordinate object
-    byte spd; //r
+    byte spd;
     int power;
     int timer;
     byte lastPos = 0;
