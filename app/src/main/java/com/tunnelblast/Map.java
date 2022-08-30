@@ -2,6 +2,7 @@ package com.tunnelblast;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -16,6 +17,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.tunnelblast.Objects.GameObject;
 import com.tunnelblast.databinding.ActivityUsercarBinding;
 
 import android.content.Context;
@@ -32,6 +34,12 @@ public class Map extends View
     private Paint wallPaint;
     private Paint wallPaintGhost;
     private static final float WALL_THICKNESS = 4;
+
+    private Paint pnt;
+
+    GameObject testObj;
+
+    public static Context context;
 
     public Map (Context context, @Nullable AttributeSet attrs){ super (context, attrs);
         wallPaint = new Paint();
@@ -62,6 +70,12 @@ public class Map extends View
 
 
         }
+
+        pnt = new Paint();
+
+        Map.context = context;
+
+        testObj = new GameObject();
     }
 
     @Override
@@ -91,6 +105,9 @@ public class Map extends View
                             (j+1)*cellSize, (array[i][j]==-1)?wallPaint:wallPaintGhost);
             }//if -2 dont show, if -1 or >0 wall, if 0 show ghost
         }
+
+        //canvas.drawBitmap(testObj.sprite, null, new Rect(0, 0, 32, 32), null);
+        //testObj.sprite.describeContents();
     }
 
     boolean buildWall(int x, int y) {
