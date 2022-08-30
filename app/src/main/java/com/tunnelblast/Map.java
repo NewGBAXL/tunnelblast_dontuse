@@ -35,8 +35,6 @@ public class Map extends View
     private Paint wallPaintGhost;
     private static final float WALL_THICKNESS = 4;
 
-    private Paint pnt;
-
     GameObject testObj;
 
     public static Context context;
@@ -70,8 +68,6 @@ public class Map extends View
 
 
         }
-
-        pnt = new Paint();
 
         Map.context = context;
 
