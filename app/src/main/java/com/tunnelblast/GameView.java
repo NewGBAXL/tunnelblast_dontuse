@@ -13,6 +13,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.TextView;
 
 import com.tunnelblast.databinding.FragmentFirstBinding;
 import com.tunnelblast.databinding.FragmentGameViewBinding;
@@ -64,6 +65,8 @@ public class GameView extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        //TextView textView = (TextView) findViewById(R.id.textViewName);
+        //textView.setText("text you want to display");
     }
 
     @Override
@@ -94,4 +97,6 @@ public class GameView extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
+
 }
