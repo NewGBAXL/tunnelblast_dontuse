@@ -44,6 +44,7 @@ public class Cell {
     boolean buildWall(byte wallId, int str) {
         //change implementation to switch?
         //currently allows negative str, helpful for initializing outside walls
+        //error, fix asap where str == -1 return false
         if (wallId == 0 && nWall == 0) {
             nWall = (byte) str;
             return true;
@@ -63,6 +64,7 @@ public class Cell {
     boolean breakWall(byte wallId, int str) {
         //check wallId, then check if str >= the current str of the wall
         //troubleshoot
+        //also check if is outside wall
         /*if (wallId == 0){
             (nWall>=str)?(nWall-=str):nWall=0;
         }
