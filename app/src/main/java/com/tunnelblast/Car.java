@@ -20,8 +20,8 @@ class Car
 {
     private AppBarConfiguration appBarConfiguration;
     private ActivityUsercarBinding binding;
-    int bombs = 0;
-    int blocksLeft = 5;
+    int bombs = 100;
+    int blocksLeft = 100;
     private Paint skin;
     byte baseSpd; //planned feature (oil slick)
     byte pwrRate; //pwr regeneration rate
@@ -96,6 +96,8 @@ class Car
         else if (newDir == 3)
             --xPos;
         lastPos = (byte)((newDir+2)%4); //update lastPos, cycles 0-3
+        Map.inv = true;
+        //Map.updateCar(this);//update map
         return;
     }
 
