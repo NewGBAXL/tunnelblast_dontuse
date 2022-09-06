@@ -2,6 +2,7 @@ package com.tunnelblast;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -9,6 +10,8 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.view.InputDevice;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.navigation.NavController;
@@ -23,14 +26,22 @@ import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.View;
 
+import java.util.Random;
+
 public class Map extends View {
     int xWidth = 15;
     int yHeight = 15;
     private float cellSize, hMargin, vMargin;
-    private Paint wallPaint;
-    private Paint wallPaintGhost;
+    private Paint wallPaint, wallPaintGhost;
+    private Paint playerTestPaint, exitPaint;
+    private Paint carPaint = new Paint();
     private static final float WALL_THICKNESS = 4;
     public static Cell[][] cells;
+    private Cell playerTest;
+    private Cell exitSpace;
+    public static boolean inv = false;
+    private Random random;
+    Dpad dpad;
 
     //store global game data somewhere else?
     public UserCar player;
@@ -40,6 +51,8 @@ public class Map extends View {
     public Map(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         cells = new Cell[xWidth][yHeight];
+        carPaint.setColor(Color.GRAY);
+        player = new UserCar(0, 0, carPaint, (byte)10, (byte)10);
         wallPaint = new Paint();
         wallPaint.setColor(Color.BLACK);
         wallPaint.setStrokeWidth(WALL_THICKNESS);
@@ -47,6 +60,21 @@ public class Map extends View {
         wallPaintGhost.setColor(Color.BLUE);
         wallPaintGhost.setStrokeWidth(WALL_THICKNESS);
         createMaze();
+        playerTestPaint = new Paint();
+        playerTestPaint.setColor(Color.RED);
+        exitPaint = new Paint();
+        exitPaint.setColor(Color.MAGENTA);
+
+        playerTest = cells[0][0];
+        exitSpace = cells[xWidth - 1][yHeight - 1];
+        dpad = new Dpad();
+
+        /*while (true){
+            if (inv = true){
+                invalidate();
+                inv = false;
+            }
+        }*/
     }
 
     private void createMaze() {
@@ -82,7 +110,10 @@ public class Map extends View {
         canvas.translate(hMargin, vMargin);
 
         //UserCar, optimize later
-
+        Drawable d = getResources().getDrawable(R.drawable.car, null);
+        d.setBounds((int)(player.xPos*cellSize), (int)(player.yPos*cellSize),
+                (int)((player.xPos+1)*cellSize), (int)((player.yPos+1)*cellSize));
+        d.draw(canvas);
 
         //north walls
         for (int i = 0; i < xWidth; ++i) {
@@ -116,6 +147,16 @@ public class Map extends View {
                         (j + 1) * cellSize, (cells[i][j].wWall != 0) ? wallPaint : wallPaintGhost);
             }
         }
+
+        //someone needs to figure out a better way to do this
+        /*while (true){
+            if (player.moving){
+                d.setBounds((int)(player.xPos*cellSize), (int)(player.yPos*cellSize),
+                        (int)((player.xPos+1)*cellSize), (int)((player.yPos+1)*cellSize));
+                d.draw(canvas);
+                player.moving = false;
+            }
+        }*/
     }
 
     void breakWall(int x, int y, byte wallId, int str) {
@@ -129,7 +170,7 @@ public class Map extends View {
                 cells[x][y + 1].breakWall((byte)0, str);
             else if (wallId == 3)
                 cells[x - 1][y].breakWall((byte)1, str);
-            createMaze(); //inefficient, fix later
+            invalidate(); //inefficient, fix later
         }
     }
 
@@ -144,8 +185,37 @@ public class Map extends View {
                 cells[x][y + 1].buildWall((byte)0, str);
             else if (wallId == 3)
                 cells[x - 1][y].buildWall((byte)1, str);
-            createMaze(); //inefficient, fix later
+            invalidate(); //inefficient, fix later
         }
+    }
+
+    /*public void updateCar(Car car){
+        //UserCar, optimize later
+        Drawable d = getResources().getDrawable(R.drawable.car, null);
+        d.setBounds((int)(car.xPos*cellSize), (int)(car.yPos*cellSize),
+                (int)((car.xPos+1)*cellSize), (int)((car.yPos+1)*cellSize));
+        //d.draw(canvas);
+        //return;
+    }*/
+
+    @Override
+    public boolean onGenericMotionEvent(MotionEvent event) {
+        // Check if this event if from a D-pad and process accordingly.
+        if (Dpad.isDpadDevice(event)) {
+            int press = dpad.getDirectionPressed(event);
+            player.moveTo((byte) press);
+            invalidate();
+            return true;
+        }
+
+        // Check if this event is from a joystick movement and process accordingly.
+
+        return super.onGenericMotionEvent(event);
+    }
+
+    private void processJoystickInput(MotionEvent event, int historyPos) {
+        InputDevice inputDevice = event.getDevice();
+
     }
 
     //addCar method
