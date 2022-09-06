@@ -24,16 +24,22 @@ import android.util.AttributeSet;
 import android.view.View;
 
 public class Map extends View {
-    int xWidth = 15; //14
-    int yHeight = 15; //7
+    int xWidth = 15;
+    int yHeight = 15;
     private float cellSize, hMargin, vMargin;
     private Paint wallPaint;
     private Paint wallPaintGhost;
     private static final float WALL_THICKNESS = 4;
-    private Cell[][] cells;
+    public static Cell[][] cells;
+
+    //store global game data somewhere else?
+    public UserCar player;
+    //public CPUcar cpu; //user stack or arrayList?
+    //public Localcar opponent; //hardcode x4, x5, ..?
 
     public Map(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        cells = new Cell[xWidth][yHeight];
         wallPaint = new Paint();
         wallPaint.setColor(Color.BLACK);
         wallPaint.setStrokeWidth(WALL_THICKNESS);
@@ -75,6 +81,9 @@ public class Map extends View {
         vMargin = (height - yHeight * cellSize) / 2;
         canvas.translate(hMargin, vMargin);
 
+        //UserCar, optimize later
+
+
         //north walls
         for (int i = 0; i < xWidth; ++i) {
             for (int j = 0; j < yHeight; ++j) {
@@ -114,12 +123,13 @@ public class Map extends View {
         if (cells[x][y].breakWall(wallId, str)) {
             if (wallId == 0)
                 cells[x][y - 1].breakWall((byte)2, str);
-            if (wallId == 1)
+            else if (wallId == 1)
                 cells[x + 1][y].breakWall((byte)3, str);
-            if (wallId == 2)
+            else if (wallId == 2)
                 cells[x][y + 1].breakWall((byte)0, str);
-            if (wallId == 3)
+            else if (wallId == 3)
                 cells[x - 1][y].breakWall((byte)1, str);
+            createMaze(); //inefficient, fix later
         }
     }
 
@@ -128,12 +138,13 @@ public class Map extends View {
         if (cells[x][y].buildWall(wallId, str)) {
             if (wallId == 0)
                 cells[x][y - 1].buildWall((byte)2, str);
-            if (wallId == 1)
+            else if (wallId == 1)
                 cells[x + 1][y].buildWall((byte)3, str);
-            if (wallId == 2)
+            else if (wallId == 2)
                 cells[x][y + 1].buildWall((byte)0, str);
-            if (wallId == 3)
+            else if (wallId == 3)
                 cells[x - 1][y].buildWall((byte)1, str);
+            createMaze(); //inefficient, fix later
         }
     }
 
