@@ -14,9 +14,10 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.tunnelblast.Objects.GameObject;
 import com.tunnelblast.databinding.ActivityUsercarBinding;
 
-class Car
+class Car extends GameObject
 {
     private AppBarConfiguration appBarConfiguration;
     private ActivityUsercarBinding binding;
@@ -25,20 +26,18 @@ class Car
     private Paint skin;
     byte baseSpd; //planned feature (oil slick)
     byte pwrRate; //pwr regeneration rate
-    int xPos; //todo: setup coordinate object
-    int yPos; //todo: setup coordinate object
     byte spd;
     int power;
     int timer;
     byte lastPos = 0;
 
-    Car(int x, int y, Paint nSkin, byte nBaseSpd, byte nPwrRate)
+    Car(Map game, int x, int y, Paint nSkin, byte nBaseSpd, byte nPwrRate)
     {
+        super(game);
         power = 10;
         timer = 10;
         skin = nSkin;
-        xPos = x;
-        yPos = y;
+        position = new Coordinates(x, y);
         baseSpd = nBaseSpd;
         pwrRate = nPwrRate;
         bombs = 10;
@@ -47,7 +46,7 @@ class Car
 
     public boolean destroy(byte cardinal, int str)
     {
-        Map.cells[xPos][yPos].breakWall(cardinal, str);
+        Map.cells[position.gridX()][position.gridY()].breakWall(cardinal, str);
         --bombs;
         return true;
     }
@@ -57,7 +56,7 @@ class Car
         if (!isValidMove(cardinal))
             return false;
 
-        Map.cells[xPos][yPos].buildWall(cardinal);
+        Map.cells[position.gridX()][position.gridY()].buildWall(cardinal);
         --blocksLeft;
         return true;
     }
@@ -66,13 +65,13 @@ class Car
     {
         if (lastPos == dir)
             return false;
-        if (dir==0 && Map.cells[xPos][yPos].nWall == 0)
+        if (dir==0 && Map.cells[position.gridX()][position.gridY()].nWall == 0)
             return true;
-        if (dir==1 && Map.cells[xPos][yPos].eWall == 0)
+        if (dir==1 && Map.cells[position.gridX()][position.gridY()].eWall == 0)
             return true;
-        if (dir==2 && Map.cells[xPos][yPos].sWall == 0)
+        if (dir==2 && Map.cells[position.gridX()][position.gridY()].sWall == 0)
             return true;
-        if (dir==3 && Map.cells[xPos][yPos].wWall == 0)
+        if (dir==3 && Map.cells[position.gridX()][position.gridY()].wWall == 0)
             return true;
         return false;
     }
@@ -88,13 +87,13 @@ class Car
         //Map.loseUI()?
 
         if (newDir == 0)
-            --yPos;
+            --position.Y;
         else if (newDir == 1)
-            ++xPos;
+            ++position.X;
         else if (newDir == 2)
-            ++yPos;
+            ++position.Y;
         else if (newDir == 3)
-            --xPos;
+            --position.X;
         lastPos = (byte)((newDir+2)%4); //update lastPos, cycles 0-3
         Map.inv = true;
         //Map.updateCar(this);//update map

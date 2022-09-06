@@ -19,6 +19,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.tunnelblast.Objects.GameObject;
 import com.tunnelblast.databinding.ActivityUsercarBinding;
 
 import android.content.Context;
@@ -26,6 +27,9 @@ import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class Map extends View {
@@ -48,11 +52,13 @@ public class Map extends View {
     //public CPUcar cpu; //user stack or arrayList?
     //public Localcar opponent; //hardcode x4, x5, ..?
 
+    List<GameObject> objects;
+
     public Map(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         cells = new Cell[xWidth][yHeight];
         carPaint.setColor(Color.GRAY);
-        player = new UserCar(0, 0, carPaint, (byte)10, (byte)10);
+        player = new UserCar(this, 32, 32, carPaint, (byte)10, (byte)10);
         wallPaint = new Paint();
         wallPaint.setColor(Color.BLACK);
         wallPaint.setStrokeWidth(WALL_THICKNESS);
@@ -75,6 +81,11 @@ public class Map extends View {
                 inv = false;
             }
         }*/
+
+        objects = new ArrayList<>();
+        objects.add(player);
+
+        objects.add(new Car(this, 352, 352, carPaint, (byte)10, (byte)10));
     }
 
     private void createMaze() {
@@ -110,10 +121,10 @@ public class Map extends View {
         canvas.translate(hMargin, vMargin);
 
         //UserCar, optimize later
-        Drawable d = getResources().getDrawable(R.drawable.car, null);
-        d.setBounds((int)(player.xPos*cellSize), (int)(player.yPos*cellSize),
-                (int)((player.xPos+1)*cellSize), (int)((player.yPos+1)*cellSize));
-        d.draw(canvas);
+        //Drawable d = getResources().getDrawable(R.drawable.car, null);
+        //d.setBounds((int)(player.xPos*cellSize), (int)(player.yPos*cellSize),
+        //        (int)((player.xPos+1)*cellSize), (int)((player.yPos+1)*cellSize));
+        //d.draw(canvas);
 
         //north walls
         for (int i = 0; i < xWidth; ++i) {
@@ -157,6 +168,7 @@ public class Map extends View {
                 player.moving = false;
             }
         }*/
+        for (GameObject o : objects) o.Draw(canvas);
     }
 
     void breakWall(int x, int y, byte wallId, int str) {

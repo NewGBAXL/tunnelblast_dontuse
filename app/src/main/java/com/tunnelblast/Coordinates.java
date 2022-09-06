@@ -11,15 +11,15 @@ public class Coordinates {
         Y = yPosition;
     }
 
-    public float gridX()
+    public int gridX()
     {
         //Placeholder until I know how the grid is handled
-        return X;
+        return (int)X;
     }
 
-    public float gridY()
+    public int gridY()
     {
         //Placeholder until I know how the grid is handled
-        return Y;
+        return (int)Y;
     }
 }
