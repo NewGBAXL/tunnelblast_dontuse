@@ -100,7 +100,7 @@ public class Map extends View {
         int width = getWidth();
         int height = getHeight();
 
-        if (width / height < xWidth / yHeight)
+        if (height != 0 && width / height < xWidth / yHeight)
             cellSize = width / (xWidth + 1);
         else
             cellSize = height / (yHeight + 1);
