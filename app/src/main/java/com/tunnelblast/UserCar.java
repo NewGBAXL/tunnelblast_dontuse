@@ -1,5 +1,6 @@
 package com.tunnelblast;
 
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.InputDevice;
 import android.view.MotionEvent;
@@ -10,9 +11,11 @@ public class UserCar extends Car{
     int yPos = 0;
     Dpad dpad;
     //public boolean moving = false;
-    UserCar(int x, int y, Paint nSkin, byte nBaseSpd, byte nPwrRate) {
-        super(x, y, nSkin, nBaseSpd, nPwrRate);
+    UserCar(Map game, int x, int y, Paint nSkin, byte nBaseSpd, byte nPwrRate) {
+        super(game, x, y, nSkin, nBaseSpd, nPwrRate);
+        nSkin.setColor(Color.GREEN);
         dpad = new Dpad();
+        sprite = game.getResources().getDrawable(R.drawable.car2, null);
     }
 
     //use power
