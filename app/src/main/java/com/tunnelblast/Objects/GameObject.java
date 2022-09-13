@@ -15,7 +15,7 @@ import java.io.InputStream;
 
 public class GameObject
 {
-    private Map game;
+    protected Map game;
 
     public Coordinates position;
     public Drawable sprite;
@@ -27,6 +27,8 @@ public class GameObject
 
         sprite = game.getResources().getDrawable(R.drawable.car, null);
     }
+
+    public void Update(){}
 
     public void Draw(Canvas canvas)
     {

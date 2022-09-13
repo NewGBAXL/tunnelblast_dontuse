@@ -77,6 +77,8 @@ public class GameView extends Fragment {
     ) {
 
         binding = FragmentGameViewBinding.inflate(inflater, container, false);
+
+        Map.UIBinding = binding;
         return binding.getRoot();
 
     }

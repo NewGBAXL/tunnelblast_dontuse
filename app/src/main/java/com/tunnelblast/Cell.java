@@ -37,11 +37,11 @@ public class Cell {
         row = nRow;
     }
 
-    boolean buildWall(byte wallId) {
+    public boolean buildWall(byte wallId) {
         return buildWall(wallId, 1);
     }
 
-    boolean buildWall(byte wallId, int str) {
+    public boolean buildWall(byte wallId, int str) {
         //change implementation to switch?
         //currently allows negative str, helpful for initializing outside walls
         //error, fix asap where str == -1 return false
@@ -61,7 +61,7 @@ public class Cell {
         return false;
     }
 
-    boolean breakWall(byte wallId, int str) {
+    public boolean breakWall(byte wallId, int str) {
         //check wallId, then check if str >= the current str of the wall
         //troubleshoot
         //also check if is outside wall

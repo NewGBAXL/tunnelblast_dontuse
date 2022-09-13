@@ -14,12 +14,12 @@ public class Coordinates {
     public int gridX()
     {
         //Placeholder until I know how the grid is handled
-        return (int)X;
+        return (int)(X / Map.cellSize);
     }
 
     public int gridY()
     {
         //Placeholder until I know how the grid is handled
-        return (int)Y;
+        return (int)(Y / Map.cellSize);
     }
 }
