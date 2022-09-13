@@ -2,40 +2,38 @@ package com.tunnelblast;
 
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
+import android.icu.util.TimeUnit;
+import android.util.TimeUtils;
 import android.view.InputDevice;
 import android.view.MotionEvent;
 import android.view.View;
 
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
+import com.tunnelblast.Objects.Car;
 import com.tunnelblast.Objects.GameObject;
-import com.tunnelblast.databinding.ActivityUsercarBinding;
+import com.tunnelblast.Objects.UserCar;
+import com.tunnelblast.databinding.FragmentGameViewBinding;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
-import android.view.View;
+import android.widget.Toast;
 
+import java.sql.Time;
+import java.time.Clock;
+import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
 public class Map extends View {
     int xWidth = 15;
     int yHeight = 15;
-    private float cellSize, hMargin, vMargin;
+    public static float cellSize, hMargin, vMargin;
     private Paint wallPaint, wallPaintGhost;
     private Paint playerTestPaint, exitPaint;
     private Paint carPaint = new Paint();
@@ -45,6 +43,7 @@ public class Map extends View {
     private Cell exitSpace;
     public static boolean inv = false;
     private Random random;
+    public static FragmentGameViewBinding UIBinding;
     Dpad dpad;
 
     //store global game data somewhere else?
@@ -58,7 +57,6 @@ public class Map extends View {
         super(context, attrs);
         cells = new Cell[xWidth][yHeight];
         carPaint.setColor(Color.GRAY);
-        player = new UserCar(this, 32, 32, carPaint, (byte)10, (byte)10);
         wallPaint = new Paint();
         wallPaint.setColor(Color.BLACK);
         wallPaint.setStrokeWidth(WALL_THICKNESS);
@@ -83,9 +81,11 @@ public class Map extends View {
         }*/
 
         objects = new ArrayList<>();
+        player = new UserCar(this, 32, 32, carPaint, (byte)10, (byte)10);
         objects.add(player);
-
         objects.add(new Car(this, 352, 352, carPaint, (byte)10, (byte)10));
+
+
     }
 
     private void createMaze() {
@@ -105,13 +105,20 @@ public class Map extends View {
         }
     }
 
+    private void UpdateObjects()
+    {
+        for (GameObject o : objects) o.Update();
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
+        UpdateObjects();
+
         canvas.drawColor(Color.GREEN);
         int width = getWidth();
         int height = getHeight();
 
-        if (height != 0 && width / height < xWidth / yHeight)
+        if (width / (height + 1) < xWidth / yHeight)
             cellSize = width / (xWidth + 1);
         else
             cellSize = height / (yHeight + 1);
@@ -119,12 +126,6 @@ public class Map extends View {
         hMargin = (width - xWidth * cellSize) / 2;
         vMargin = (height - yHeight * cellSize) / 2;
         canvas.translate(hMargin, vMargin);
-
-        //UserCar, optimize later
-        //Drawable d = getResources().getDrawable(R.drawable.car, null);
-        //d.setBounds((int)(player.xPos*cellSize), (int)(player.yPos*cellSize),
-        //        (int)((player.xPos+1)*cellSize), (int)((player.yPos+1)*cellSize));
-        //d.draw(canvas);
 
         //north walls
         for (int i = 0; i < xWidth; ++i) {
@@ -159,16 +160,14 @@ public class Map extends View {
             }
         }
 
-        //someone needs to figure out a better way to do this
-        /*while (true){
-            if (player.moving){
-                d.setBounds((int)(player.xPos*cellSize), (int)(player.yPos*cellSize),
-                        (int)((player.xPos+1)*cellSize), (int)((player.yPos+1)*cellSize));
-                d.draw(canvas);
-                player.moving = false;
-            }
-        }*/
         for (GameObject o : objects) o.Draw(canvas);
+
+        //Wait to cap framerate, then signal to redraw
+        try {Thread.sleep(5);}
+        catch (InterruptedException ex) {
+            Toast.makeText(getContext(), ex.getMessage(), Toast.LENGTH_SHORT).show();}
+
+        invalidate();
     }
 
     void breakWall(int x, int y, byte wallId, int str) {

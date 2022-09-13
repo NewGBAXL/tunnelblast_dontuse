@@ -1,4 +1,4 @@
-package com.tunnelblast;
+package com.tunnelblast.Objects;
 
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -14,10 +14,12 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.tunnelblast.Coordinates;
+import com.tunnelblast.Map;
 import com.tunnelblast.Objects.GameObject;
 import com.tunnelblast.databinding.ActivityUsercarBinding;
 
-class Car extends GameObject
+public class Car extends GameObject
 {
     private AppBarConfiguration appBarConfiguration;
     private ActivityUsercarBinding binding;
@@ -31,7 +33,7 @@ class Car extends GameObject
     int timer;
     byte lastPos = 0;
 
-    Car(Map game, int x, int y, Paint nSkin, byte nBaseSpd, byte nPwrRate)
+    public Car(Map game, int x, int y, Paint nSkin, byte nBaseSpd, byte nPwrRate)
     {
         super(game);
         power = 10;
