@@ -83,17 +83,17 @@ public class GameView extends Fragment {
 
     }
 
-    /*public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.buttonGameStart.setOnClickListener(new View.OnClickListener() {
+        binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(GameView.this)
-                        .navigate(R.id.GameView_to_FirstFragment);
+                        .navigate(R.id.action_gameView_to_FirstFragment);
             }
         });
-    }*/
+    }
 
     @Override
     public void onDestroyView() {

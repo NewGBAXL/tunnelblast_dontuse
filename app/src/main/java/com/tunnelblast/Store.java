@@ -10,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.tunnelblast.databinding.FragmentSettingsBinding;
+import com.tunnelblast.databinding.FragmentStoreBinding;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link Store#newInstance} factory method to
@@ -25,6 +28,8 @@ public class Store extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private FragmentStoreBinding binding;
 
     public Store() {
         // Required empty public constructor
@@ -60,20 +65,20 @@ public class Store extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_store, container, false);
+        binding = FragmentStoreBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        /*binding.buttonBack.setOnClickListener(new View.OnClickListener() {
+        binding.buttonBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NavHostFragment.findNavController(Store.this)
                         .navigate(R.id.action_store_to_FirstFragment);
 
             }
-        });*/
+        });
     }
 }

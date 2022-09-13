@@ -12,15 +12,15 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_blank_fragment" />
+        android:text="@string/store_main_text" />
 
     <Button
         android:id="@+id/button_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="209dp"
+        android:layout_marginTop="564dp"
         android:text="@string/go_back"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="131dp" />
+        tools:layout_editor_absoluteX="161dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
