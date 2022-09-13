@@ -32,6 +32,8 @@ public class GameObject
 
     public void Draw(Canvas canvas)
     {
+        //sprite.setBounds((int)(position.X * game.cellSize), (int)(position.Y * game.cellSize),
+        //        (int)((position.X + 1) * game.cellSize),(int)((position.Y+1) * game.cellSize));
         sprite.setBounds((int)position.X - sprite.getMinimumWidth() / 2, (int)position.Y - sprite.getMinimumHeight() / 2, (int)position.X + sprite.getMinimumWidth() / 2, (int)position.Y + sprite.getMinimumHeight() / 2);
         sprite.draw(canvas);
     }

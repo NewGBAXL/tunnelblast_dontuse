@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.tunnelblast.Objects.Car;
+import com.tunnelblast.Objects.Counter;
 import com.tunnelblast.Objects.GameObject;
 import com.tunnelblast.Objects.UserCar;
 import com.tunnelblast.databinding.FragmentGameViewBinding;
@@ -45,6 +46,10 @@ public class Map extends View {
     private Random random;
     public static FragmentGameViewBinding UIBinding;
     Dpad dpad;
+    public Counter bombsCounter;
+    public Counter blocksCounter;
+    public Counter powerCounter;
+    public Counter timerCounter;
 
     //store global game data somewhere else?
     public UserCar player;
@@ -200,15 +205,6 @@ public class Map extends View {
         }
     }
 
-    /*public void updateCar(Car car){
-        //UserCar, optimize later
-        Drawable d = getResources().getDrawable(R.drawable.car, null);
-        d.setBounds((int)(car.xPos*cellSize), (int)(car.yPos*cellSize),
-                (int)((car.xPos+1)*cellSize), (int)((car.yPos+1)*cellSize));
-        //d.draw(canvas);
-        //return;
-    }*/
-
     @Override
     public boolean onGenericMotionEvent(MotionEvent event) {
         // Check if this event if from a D-pad and process accordingly.
@@ -238,7 +234,6 @@ public class Map extends View {
     //loseUI method
     //carBlowUp method
     //carGun method
-    //moveTo (car) method (where?)
 }
 
 //if edge, set to -1

@@ -25,7 +25,46 @@ public class UserCar extends Car {
 
     @Override
     public void Update() {
-        if (game.UIBinding.button.isPressed()) position.X += 4;
+        //add timeout, this should fix build/break
+
+        //move
+        if (game.UIBinding.upButton.isPressed()) moveTo((byte) 0);
+        if (game.UIBinding.downButton.isPressed()) moveTo((byte) 2);
+        if (game.UIBinding.leftButton.isPressed()) moveTo((byte) 3);
+        if (game.UIBinding.rightButton.isPressed()) moveTo((byte) 1);
+
+
+        if (game.UIBinding.buildButton.isPressed()) build((byte)0);
+        /*//destroy
+        if (game.UIBinding.upButton.isPressed() && game.UIBinding.breakButton.isPressed()) moveTo((byte) 0);
+        if (game.UIBinding.downButton.isPressed() && game.UIBinding.breakButton.isPressed()) moveTo((byte) 2);
+        if (game.UIBinding.leftButton.isPressed() && game.UIBinding.breakButton.isPressed()) moveTo((byte) 3);
+        if (game.UIBinding.rightButton.isPressed() && game.UIBinding.breakButton.isPressed()) moveTo((byte) 1);
+
+        //build
+        if (game.UIBinding.upButton.isPressed() && game.UIBinding.buildButton.isPressed()) moveTo((byte) 0);
+        if (game.UIBinding.downButton.isPressed() && game.UIBinding.buildButton.isPressed()) moveTo((byte) 2);
+        if (game.UIBinding.leftButton.isPressed() && game.UIBinding.buildButton.isPressed()) moveTo((byte) 3);
+        if (game.UIBinding.rightButton.isPressed() && game.UIBinding.buildButton.isPressed()) moveTo((byte) 1);
+        /*
+        //evade
+        //if (game.UIBinding.evadeButton.isPressed() oilSlick(1);
+        //planned feature*/
+        super.Update();
+    }
+
+    public boolean destroy(byte cardinal, int str)
+    {
+        boolean returnBool = super.destroy(cardinal, str);
+        game.bombsCounter.setValue(bombs);
+        return returnBool;
+    }
+
+    public boolean build(byte cardinal)
+    {
+        boolean returnBool = super.build(cardinal);
+        game.blocksCounter.setValue(blocksLeft);
+        return returnBool;
     }
 
     //use power
@@ -48,3 +87,4 @@ public class UserCar extends Car {
     }*/
         // Check if this event is from a joystick movement and process accordingly.
 }
+

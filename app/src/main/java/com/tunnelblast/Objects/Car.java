@@ -23,8 +23,8 @@ public class Car extends GameObject
 {
     private AppBarConfiguration appBarConfiguration;
     private ActivityUsercarBinding binding;
-    int bombs = 100;
-    int blocksLeft = 100;
+    int bombs = 50;
+    int blocksLeft = 50;
     private Paint skin;
     byte baseSpd; //planned feature (oil slick)
     byte pwrRate; //pwr regeneration rate
@@ -48,9 +48,9 @@ public class Car extends GameObject
 
     public boolean destroy(byte cardinal, int str)
     {
-        Map.cells[position.gridX()][position.gridY()].breakWall(cardinal, str);
+        boolean returnBool = Map.cells[position.gridX()][position.gridY()].breakWall(cardinal, str);
         --bombs;
-        return true;
+        return returnBool;
     }
 
     public boolean build(byte cardinal)
@@ -58,9 +58,9 @@ public class Car extends GameObject
         if (!isValidMove(cardinal))
             return false;
 
-        Map.cells[position.gridX()][position.gridY()].buildWall(cardinal);
+        boolean returnBool = Map.cells[position.gridX()][position.gridY()].buildWall(cardinal);
         --blocksLeft;
-        return true;
+        return returnBool;
     }
 
     public boolean isValidMove(byte dir)
@@ -98,26 +98,12 @@ public class Car extends GameObject
             --position.X;
         lastPos = (byte)((newDir+2)%4); //update lastPos, cycles 0-3
         Map.inv = true;
-        //Map.updateCar(this);//update map
         return;
     }
-
-    /*void drawPosition(){
-        //should this be done by grid?
-        return;
-    }*/
 
     //planned feature
     /*public void oilSlick(int intensity){
         Map.cells[xPos][yPos].setSpd(intensity);
         return;
     }*/
-
-    //todo: create 2D coordinate object ??
-    //todo: create extending car objects
-
-    //note: cell object makes the following unnecessary
-    //the coordinate object will have two variables, x & y, and have accessor and mutator functions,
-    //as well as functions that return the x & y on the grid array (slightly different) so that we
-    //won't have to convert by hand every time
 }
